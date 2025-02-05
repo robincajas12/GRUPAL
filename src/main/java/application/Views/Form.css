@@ -1,0 +1,41 @@
+/* Estilos básicos para el GridPane */
+.grid-pane {
+    -fx-background-color: #f4f4f4; /* Fondo gris claro */
+    -fx-padding: 20px; /* Espaciado interno */
+    -fx-hgap: 10px; /* Espaciado horizontal entre controles */
+    -fx-vgap: 10px; /* Espaciado vertical entre controles */
+}
+
+/* Estilo de los Labels */
+.label {
+    -fx-font-size: 14px; /* Tamaño de fuente */
+    -fx-font-weight: bold; /* Negrita */
+    -fx-text-fill: #333333; /* Color de texto */
+}
+
+/* Estilo de los TextFields */
+.text-field {
+    -fx-font-size: 14px; /* Tamaño de fuente */
+    -fx-background-color: #ffffff; /* Fondo blanco */
+    -fx-border-color: #cccccc; /* Borde gris claro */
+    -fx-border-radius: 5px; /* Bordes redondeados */
+    -fx-padding: 5px; /* Espaciado dentro del TextField */
+}
+
+/* Estilo cuando el TextField recibe el foco */
+.text-field:focused {
+    -fx-border-color: #6e9dc6; /* Borde azul claro cuando tiene foco */
+}
+
+/* Estilo de los botones si los agregas más adelante */
+.button {
+    -fx-font-size: 14px;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
