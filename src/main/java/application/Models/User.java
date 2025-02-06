@@ -8,15 +8,15 @@ public class User implements IValidosParaCrud {
     private final String role;
     private final String avatar;
 
-    public User(String email, String password, String name, String avatar) {
-        this(0, email, password, name, null, avatar);
+    public User(String email, String name, String avatar,String password) {
+        this(0, email, name, avatar, password, null);
     }
 
-    public User(int id, String email, String password, String name, String avatar) {
-        this(id, email, password, name, null, avatar);
+    public User(int id, String email,String name, String avatar,String password) {
+        this(id, email, name, avatar, password, null);
     }
 
-    public User(int id, String email, String password, String name, String role, String avatar) {
+    public User(int id, String email,  String name, String avatar,String password, String role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -38,4 +38,11 @@ public class User implements IValidosParaCrud {
     public String name() { return name; }
     public String role() { return role; }
     public String avatar() { return avatar; }
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", role=" + role
+				+ ", avatar=" + avatar + "]";
+	}
+    
 }

@@ -18,6 +18,7 @@ public class UsuarioAd implements IAccesoDatos<User>{
 
 	@Override
 	public int crear(User item) {
+		System.out.println(item);
 	    try (PreparedStatement pstm = Main.getConnection().prepareStatement(
 	            "INSERT INTO USER(email, password, name, role, avatar) VALUES(?,?,?,?,?);",
 	            Statement.RETURN_GENERATED_KEYS
@@ -55,8 +56,8 @@ public class UsuarioAd implements IAccesoDatos<User>{
 	         pstm.setString(4, item.role() != null ? item.role() : "customer"); 
 	         pstm.setString(5, item.avatar()); 
 	         pstm.setInt(6, item.id());
-	         pstm.execute();
-	         return true;
+	         boolean a = pstm.execute();
+	         return a;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -94,6 +95,7 @@ public class UsuarioAd implements IAccesoDatos<User>{
 							res.getString(5),
 							res.getString(6)
 					));
+					
 				}
 			}
 			
@@ -101,6 +103,7 @@ public class UsuarioAd implements IAccesoDatos<User>{
 		{
 			e.printStackTrace();
 		}
+		
 		return lista;
 	}
 

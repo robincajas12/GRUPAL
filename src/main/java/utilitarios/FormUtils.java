@@ -16,5 +16,12 @@ public class FormUtils {
         }
         return true;
     }
+    public static <T> void notification (String header,String body) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText(header);
+            alert.setContentText(body);
+            alert.showAndWait();
+    }
 }
 

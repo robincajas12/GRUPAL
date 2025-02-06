@@ -34,6 +34,7 @@ public class FormGeneric<T> {
                     Label label = new Label(field.getName() + ":");
                     TextField textField = new TextField();
                     fieldMap.put(field.getName(), textField);
+                    
                     gridPane.add(label, 0, i);
                     gridPane.add(textField, 1, i);
             }
@@ -49,6 +50,7 @@ public class FormGeneric<T> {
             {
             	Label label = new Label(field.getName() + ":");
                 TextField textField = new TextField();
+                textField.setPromptText(field.getName());
                 fieldMap.put(field.getName(), textField);
                 gridPane.add(label, 0, i);
                 gridPane.add(textField, 1, i);
@@ -68,12 +70,11 @@ public class FormGeneric<T> {
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("grid-pane");
         FormGeneric<S> addGeneric = new FormGeneric<>(myClass, gridPane, item,ignoreFields,fieldsThatDontchanger);
-        Button cancel = new Button("cancel");
         Button submit = new Button("submit");
 
         submit.setOnAction(e-> submitAction.accept(addGeneric.fieldMap));
-        addGeneric.gridPane.add(cancel, 0, addGeneric.fieldMap.size());
-        addGeneric.gridPane.add(submit, 1,addGeneric.fieldMap.size());
+        int rowCount = addGeneric.gridPane.getRowCount();
+        addGeneric.gridPane.add(submit, 1, rowCount);
         return addGeneric.gridPane;
 		
     	
@@ -83,12 +84,11 @@ public class FormGeneric<T> {
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("grid-pane");
         FormGeneric<S> addGeneric = new FormGeneric<>(myClass, gridPane, ignoreFields);
-        Button cancel = new Button("cancel");
         Button submit = new Button("submit");
 
         submit.setOnAction(e-> submitAction.accept(addGeneric.fieldMap));
-        addGeneric.gridPane.add(cancel, 0, addGeneric.fieldMap.size());
-        addGeneric.gridPane.add(submit, 1,addGeneric.fieldMap.size());
+        int rowCount = addGeneric.gridPane.getRowCount();
+        addGeneric.gridPane.add(submit, 1, rowCount);
         return addGeneric.gridPane;
     }
 

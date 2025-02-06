@@ -10,7 +10,7 @@
    <top>
       <ButtonBar fx:id="buttonBar" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4e3ea8;" BorderPane.alignment="CENTER">
         <buttons>
-            
+            <Button fx:id="btnReload" text="Reload" onAction="#handleButtonClick"></Button>
         </buttons>
       </ButtonBar>
    </top>

@@ -44,7 +44,7 @@ public class TableViewGeneric<T extends IValidosParaCrud> {
 
         try {
             // Verificar si existe un getter para el campo
-            Method getterMethod = clazz.getMethod(fieldName);
+            Method getterMethod = clazz.getMethod("get" +capitalize(fieldName));
             
             if (field.getType().equals(String.class)) {
                 column = new TableColumn<T, String>(capitalize(fieldName));
@@ -59,7 +59,7 @@ public class TableViewGeneric<T extends IValidosParaCrud> {
                 column = new TableColumn<T, Boolean>(capitalize(fieldName));
                 column.setCellValueFactory(new PropertyValueFactory<>(fieldName));
             } else {
-                // Si no es un tipo manejado, usa String como valor predeterminado
+             
                 column = new TableColumn<T, String>(capitalize(fieldName));
                 column.setCellValueFactory(new PropertyValueFactory<>(fieldName));
             }
@@ -76,32 +76,27 @@ public class TableViewGeneric<T extends IValidosParaCrud> {
     	Button btnCreate = new Button("Insert");
     	btnCreate.setOnAction(e->{
     		
-    		crud.Create(tableView.getSelectionModel().getSelectedItem());
+    		crud.Create(tableView.getSelectionModel().getSelectedItem(), tableView);
     	});
     	
     	Button btnDelete = new Button("Delete");
     	btnDelete.setOnAction(e->{
-    		crud.Delete(tableView.getSelectionModel().getSelectedItem());
+    		crud.Delete(tableView.getSelectionModel().getSelectedItem(),tableView);
     	});
     	
     	Button btnEdit = new Button("Edit");
     	
     	btnEdit.setOnAction(e->{
-    		crud.Edit(tableView.getSelectionModel().getSelectedItem());
+    		crud.Edit(tableView.getSelectionModel().getSelectedItem(),tableView);
     	});
     	
-    	Button btnReload = new Button("Reload");
-    	
-    	btnReload.setOnAction(e->{
-    		crud.Reload();
-    	});
     	
     	Button btnMore = new Button("More");
     	btnMore.setOnAction(e->{
-    		crud.More();
+    		crud.More(tableView);
     	});
     	
-    	buttonBar.getButtons().addAll(btnCreate, btnReload, btnEdit,btnDelete, btnMore);
+    	buttonBar.getButtons().addAll(btnCreate, btnEdit,btnDelete, btnMore);
     }
     public void fillTableView(TableView<T> tableView, Supplier<List<T>> supplier)
     {

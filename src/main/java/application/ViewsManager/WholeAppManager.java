@@ -16,12 +16,17 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class WholeAppManager extends Application{
+	public static Stage previusStage = null;
 	public static Stage stage = null;
-	private Stage  primaryStage = null;
-    Consumer<Map<String, TextField>> miConsumer = fieldMap -> {
-        
-        
-    };
+	public static  Stage  primaryStage = null;
+	public static Stage changeStage(Stage stage)
+	{
+		WholeAppManager.previusStage = WholeAppManager.stage;
+		WholeAppManager.stage = stage;
+		return stage;
+		
+	}
+
     @Override
 	public void start(Stage primaryStage) throws InstantiationException, IllegalAccessException
 	{
