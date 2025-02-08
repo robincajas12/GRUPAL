@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="root" alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.MainMenuController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Button text="Users" onAction="#handleUsersButton" prefWidth="200" prefHeight="50">
+        <font>
+            <Font size="18"/>
+        </font>
+    </Button>
+
+    <Button text="Category" onAction="#handleCategoryButton" prefWidth="200" prefHeight="50">
+        <font>
+            <Font size="18"/>
+        </font>
+    </Button>
+
+    <Button text="Products" onAction="#handleProductsButton" prefWidth="200" prefHeight="50">
+        <font>
+            <Font size="18"/>
+        </font>
+    </Button>
+
+    <Button text="Other View" onAction="#handleOtherViewButton" prefWidth="200" prefHeight="50">
+        <font>
+            <Font size="18"/>
+        </font>
+    </Button>
+</VBox>

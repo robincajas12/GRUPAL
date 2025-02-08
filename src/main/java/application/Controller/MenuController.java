@@ -7,7 +7,9 @@ import Generics.ICrud;
 import Generics.TableViewGeneric;
 import application.CrudForTables.UserCrud;
 import application.Models.User;
+import application.ViewsManager.EViews;
 import application.ViewsManager.WholeAppManager;
+import application.database.SearchAd;
 import application.database.UsuarioAd;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -34,12 +37,24 @@ public class MenuController {
     @FXML
     private TableView<User> tableView;
     @FXML
-    public void handleButtonClick() throws IOException {
-    	tableView.getItems().setAll(FXCollections.observableArrayList(new UsuarioAd().obtenerTodos()));
-        
+    private TextField searchField;
+    @FXML
+    public void handleReturnButtonClick() throws IOException {
+    	WholeAppManager.show(EViews.MAIN);
     }
-    
-
+    @FXML
+    public void handleReloadButtonClick()
+    {
+    	tableView.getItems().setAll(FXCollections.observableArrayList(new UsuarioAd().obtenerTodos()));
+    }
+    @FXML
+    public void handleSearchButtonClick()
+    {
+    	 String query = searchField.getText();
+    	 System.out.print(query);
+    	tableView.getItems().setAll(FXCollections.observableArrayList(SearchAd.buscarUser(query)));
+ 		tableView.refresh();
+    }
 	public void initialize()
 	{
 		

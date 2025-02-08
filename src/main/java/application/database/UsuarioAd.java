@@ -48,22 +48,33 @@ public class UsuarioAd implements IAccesoDatos<User>{
 	
 	@Override
 	public boolean actualizar(User item) {
-		try {
-			PreparedStatement pstm = Main.getConnection().prepareStatement("UPDATE USER SET email = ? ,password = ?, name = ?, role = ?, avatar = ? where id = ?");
-			 pstm.setString(1, item.email());
-	         pstm.setString(2, item.password());
-	         pstm.setString(3, item.name());  
-	         pstm.setString(4, item.role() != null ? item.role() : "customer"); 
-	         pstm.setString(5, item.avatar()); 
-	         pstm.setInt(6, item.id());
-	         boolean a = pstm.execute();
-	         return a;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+	    try {
+
+
+	        // Preparar la consulta de actualización
+	        String sql = "UPDATE USER SET email = ?, password = ?, name = ?, role = ?, avatar = ? WHERE id = ?";
+
+	        try (PreparedStatement pstm = Main.getConnection().prepareStatement(sql)) {
+	            // Establecer los parámetros de la consulta
+	            pstm.setString(1, item.email());         // Establecer el nuevo email
+	            pstm.setString(2, item.password());      // Establecer la nueva contraseña (asegurándote de que esté hasheada)
+	            pstm.setString(3, item.name());          // Establecer el nuevo nombre
+	            pstm.setString(4, item.role() != null ? item.role() : "customer"); // Establecer el rol (o "customer" por defecto)
+	            pstm.setString(5, item.avatar());        // Establecer el nuevo avatar
+	            pstm.setInt(6, item.id());               // Establecer el ID del usuario a actualizar
+
+	            // Ejecutar la consulta
+	            int rowsUpdated = pstm.executeUpdate();
+
+	            // Verificar si se actualizó alguna fila
+	            return rowsUpdated > 0;  // Retorna verdadero si se actualizó al menos una fila
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();  // Imprimir detalles del error si ocurre una excepción
+	    }
+	    return false;  // Retorna falso si ocurrió algún error
 	}
+
 
 	@Override
 	public boolean eliminar(int id) {

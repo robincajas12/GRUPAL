@@ -35,10 +35,15 @@ public class UserCrud implements ICrud<User> {
 				}
 			}, "id role");
 			
-			Scene miScene = new Scene(form);
-			Stage s = new Stage();
-			s.setScene(miScene);
-			s.show();
+            Stage stage = new Stage();
+            stage.setTitle("Add User");
+            Scene miScene = new Scene(form);
+            miScene.getStylesheets().clear(); 
+            miScene.getStylesheets().add(getClass().getResource("/application/Views/Form.css").toExternalForm());
+            stage.setScene(miScene);
+            stage.setMinHeight(300);
+            stage.setMinWidth(300);
+            stage.show();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,9 +85,14 @@ public class UserCrud implements ICrud<User> {
 				e.printStackTrace();
 			}
 			
-			Stage stage = new Stage();
-            stage.setTitle("Editar Usuario");
-            stage.setScene(new Scene(form));
+            Stage stage = new Stage();
+            stage.setTitle("Edit User");
+            Scene miScene = new Scene(form);
+            miScene.getStylesheets().clear(); 
+            miScene.getStylesheets().add(getClass().getResource("/application/Views/Form.css").toExternalForm());
+            stage.setScene(miScene);
+            stage.setMinHeight(400);
+            stage.setMinWidth(300);
             stage.show();
 			
 		}

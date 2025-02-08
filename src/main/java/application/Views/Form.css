@@ -4,6 +4,7 @@
     -fx-padding: 20px; /* Espaciado interno */
     -fx-hgap: 10px; /* Espaciado horizontal entre controles */
     -fx-vgap: 10px; /* Espaciado vertical entre controles */
+
 }
 
 /* Estilo de los Labels */
@@ -38,4 +39,37 @@
 
 .button:hover {
     -fx-background-color: #45a049;
+}
+
+.form-grid {
+    padding: 50px;
+    gap: 10px;
+}
+
+.form-label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-textfield {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-textfield-disabled {
+    background-color: #f0f0f0;
+}
+
+.form-button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-button:hover {
+    background-color: #0056b3;
 }

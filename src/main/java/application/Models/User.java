@@ -8,6 +8,7 @@ public class User implements IValidosParaCrud {
     private final String role;
     private final String avatar;
 
+
     public User(String email, String name, String avatar,String password) {
         this(0, email, name, avatar, password, null);
     }

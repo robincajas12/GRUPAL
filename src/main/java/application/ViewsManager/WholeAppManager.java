@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class WholeAppManager extends Application{
@@ -26,7 +27,47 @@ public class WholeAppManager extends Application{
 		return stage;
 		
 	}
+	
+	public static void show (EViews views)
+	{
+		FXMLLoader loader = new FXMLLoader();
+		switch(views)
+		{
+			case EViews.USERS:
+				loader.setLocation(EstudiantesManager.class.getResource("/application/Views/TablaUsers.fxml"));
+				break;
+			case EViews.MAIN:
+				loader.setLocation(EstudiantesManager.class.getResource("/application/Views/MainMenu.fxml"));
+				break;
+			case EViews.CATEGORY:
+				loader.setLocation(EstudiantesManager.class.getResource("/application/Views/TableCategory.fxml"));
+				break;
+			case EViews.PRODUCTS:
+				loader.setLocation(EstudiantesManager.class.getResource("/application/Views/TableProducts.fxml"));
+				break;
+		default:
+			loader.setLocation(EstudiantesManager.class.getResource("/application/Views/MainMenu.fxml"));
+			break;
+		}
+		Parent root;
+		Scene miAddManager = null;
+		try {
+			root = loader.load();
+			miAddManager = new Scene(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        WholeAppManager.stage.setTitle("Form");
+        WholeAppManager.stage.setScene(miAddManager);
+        javafx.geometry.Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
+
+     WholeAppManager.stage.setWidth(screenBounds.getWidth());
+     WholeAppManager.stage.setHeight(screenBounds.getHeight());
+        WholeAppManager.stage.show();
+        
+	}
     @Override
 	public void start(Stage primaryStage) throws InstantiationException, IllegalAccessException
 	{
@@ -39,7 +80,7 @@ public class WholeAppManager extends Application{
         gridPane.getStyleClass().add("grid-pane");
     
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(EstudiantesManager.class.getResource("/application/Views/Tabla.fxml"));
+		loader.setLocation(EstudiantesManager.class.getResource("/application/Views/MainMenu.fxml"));
 		Parent root;
 		Scene miAddManager = null;
 		try {

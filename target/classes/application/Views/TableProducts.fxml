@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+
+<BorderPane fx:controller="application.Controller.MenuControllerProduct" 
+            maxHeight="-Infinity" maxWidth="-Infinity" 
+            minHeight="-Infinity" minWidth="-Infinity" 
+            prefHeight="400.0" prefWidth="600.0" 
+            stylesheets="@Tabla.css" 
+            xmlns="http://javafx.com/javafx/23.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1">
+   
+   <!-- Parte superior (top) con TextField y Button para búsqueda -->
+   <top>
+      <HBox spacing="10" alignment="CENTER" style="-fx-background-color: #4e3ea8;">
+         <TextField fx:id="searchField" promptText="Buscar..." prefWidth="200" />
+         <Button text="Buscar" onAction="#handleSearchButtonClick" />
+         <ButtonBar fx:id="buttonBar" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <buttons>
+               <Button fx:id="btnReload" text="Return" onAction="#handleReturnButtonClick" />
+               <Button fx:id="btnReload" text="Reload" onAction="#handleReloadButtonClick" />
+            </buttons>
+         </ButtonBar>
+      </HBox>
+   </top>
+
+   <!-- Parte central (center) con la tabla -->
+   <center>
+      <TableView fx:id="tableView" BorderPane.alignment="CENTER">
+
+      </TableView>
+   </center>
+</BorderPane>
