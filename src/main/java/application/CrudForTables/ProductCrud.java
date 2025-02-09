@@ -104,8 +104,6 @@ public class ProductCrud implements ICrud<Product> {
         return wasDeleted;
     }
 
-    @Override
-    public void More(TableView<Product> t) {
-    }
+
 }
 

@@ -13,6 +13,8 @@ import java.io.IOException;
 
 import application.ViewsManager.EViews;
 import application.ViewsManager.WholeAppManager;
+import application.service.ProductImporter;
+import application.service.UserImporter;
 
 public class MainMenuController {
 
@@ -27,12 +29,18 @@ public class MainMenuController {
 
     @FXML
     private Button otherViewButton;
-
+    //@FXML
+    //private Button btnImport;
     @FXML
     private void handleUsersButton() {
         WholeAppManager.show(EViews.USERS);
     }
-
+    /*@FXML
+    private void handleImportButtonClick()
+    {
+    	new UserImporter().importUsers();
+    	new ProductImporter().importProducts();
+    }*/
     @FXML
     private void handleCategoryButton() {
     	WholeAppManager.show(EViews.CATEGORY);

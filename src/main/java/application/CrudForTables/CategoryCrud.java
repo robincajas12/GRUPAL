@@ -103,8 +103,5 @@ public class CategoryCrud implements ICrud<Category> {
         return wasDeleted;
     }
 
-    @Override
-    public void More(TableView<Category> t) {
-        // You can add additional functionality here if needed
-    }
+
 }

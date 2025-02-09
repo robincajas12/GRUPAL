@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import Generics.FormGeneric;
+import application.database.ProductoAd;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -45,6 +46,11 @@ public class WholeAppManager extends Application{
 			case EViews.PRODUCTS:
 				loader.setLocation(EstudiantesManager.class.getResource("/application/Views/TableProducts.fxml"));
 				break;
+			case EViews.STORE:
+				ProductsManager.createProductGrid(new ProductoAd().getFullSchema());
+				return;
+				
+				
 		default:
 			loader.setLocation(EstudiantesManager.class.getResource("/application/Views/MainMenu.fxml"));
 			break;
@@ -58,7 +64,7 @@ public class WholeAppManager extends Application{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        WholeAppManager.stage.setTitle("Form");
+        WholeAppManager.stage.setTitle("Main");
         WholeAppManager.stage.setScene(miAddManager);
         javafx.geometry.Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -71,6 +77,7 @@ public class WholeAppManager extends Application{
     @Override
 	public void start(Stage primaryStage) throws InstantiationException, IllegalAccessException
 	{
+    	ProductsManager.createProductGrid(new ProductoAd().getFullSchema());
     	if(stage == null)
     	{
     		stage =primaryStage;

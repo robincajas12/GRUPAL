@@ -1,12 +1,14 @@
 package application.database;
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import application.Main;
 import application.Models.IAccesoDatos;
@@ -91,4 +93,25 @@ public class ProductImageAd implements IAccesoDatos<ProductImage> {
         }
         return productImages;
     }
+
+	@Override
+	public ProductImage obtenerPorId(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public boolean eliminarPorProducto(int idProduct) {
+	    try (PreparedStatement pstm = Main.getConnection().prepareStatement(
+	            "DELETE FROM ProductImages WHERE id_product = ?"
+	    )) {
+	        pstm.setInt(1, idProduct);
+	        int rowsDeleted = pstm.executeUpdate();
+	        return rowsDeleted > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+
 }

@@ -91,12 +91,7 @@ public class TableViewGeneric<T extends IValidosParaCrud> {
     	});
     	
     	
-    	Button btnMore = new Button("More");
-    	btnMore.setOnAction(e->{
-    		crud.More(tableView);
-    	});
-    	
-    	buttonBar.getButtons().addAll(btnCreate, btnEdit,btnDelete, btnMore);
+    	buttonBar.getButtons().addAll(btnCreate, btnEdit,btnDelete);
     }
     public void fillTableView(TableView<T> tableView, Supplier<List<T>> supplier)
     {

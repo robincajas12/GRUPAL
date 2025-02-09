@@ -107,10 +107,6 @@ public class UserCrud implements ICrud<User> {
 		return wasUpdated;
 	}
 
-	@Override
-	public void More(TableView<User> t) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	
 }

@@ -5,9 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import application.Main;
+import application.Models.Category;
+import application.Models.CompleteProductSchema;
 import application.Models.IAccesoDatos;
 import application.Models.Product;
 
@@ -93,4 +97,60 @@ public class ProductoAd implements IAccesoDatos<Product> {
         }
         return lista;
     }
+
+	
+	public List<CompleteProductSchema> getFullSchema() {
+		
+		List<CompleteProductSchema> lista = new ArrayList<>();
+	    Map<Integer, CompleteProductSchema> productMap = new HashMap<>();
+
+	    String query = "SELECT p.id, p.title, p.price, " +
+	                   "c.id AS category_id, c.name AS category_name, " +
+	                   "pi.image " +
+	                   "FROM Products p " +
+	                   "LEFT JOIN Categories c ON p.id_category = c.id " +
+	                   "LEFT JOIN ProductImages pi ON p.id = pi.id_product";
+
+	    try (PreparedStatement pstm = Main.getConnection().prepareStatement(query);
+	         ResultSet res = pstm.executeQuery()) {
+
+	        while (res.next()) {
+	            int productId = res.getInt("id");
+
+	            if (!productMap.containsKey(productId)) {
+	                CompleteProductSchema product = new CompleteProductSchema();
+	                product.setId(productId);
+	                product.setTitle(res.getString("title"));
+	                product.setPrice(res.getInt("price"));
+	                product.setDescription("");
+	                
+	                Category category = new Category(res.getInt("category_id"), res.getString("category_name"));
+	                product.setCategory(category);
+
+	                product.setImages(new ArrayList<>());
+	                productMap.put(productId, product);
+	            }
+
+	            String imageUrl = res.getString("image");
+	            if (imageUrl != null) {
+	                productMap.get(productId).getImages().add(imageUrl);
+	            }
+	        }
+
+	        lista.addAll(productMap.values());
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return lista;
+		
+		
+	}
+
+
+	@Override
+	public Product obtenerPorId(int id) {
+		return null;
+	}
 }

@@ -10,7 +10,11 @@ public class Category implements IValidosParaCrud {
         this.name = name;
         this.image = image;
     }
-
+    public Category(int id, String name) {
+        this.id = id;
+        this.name = name;
+		this.image = "";
+    }
     public int getId() { return id; }
     public String getName() { return name; }
     public String getImage() { return image; }

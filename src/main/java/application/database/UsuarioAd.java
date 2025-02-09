@@ -1,6 +1,7 @@
 package application.database;
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -117,5 +118,32 @@ public class UsuarioAd implements IAccesoDatos<User>{
 		
 		return lista;
 	}
+
+
+    @Override
+    public User obtenerPorId(int id) {
+        String query = "SELECT * FROM users WHERE id = ?";
+        
+        try (Connection connection = Main.getConnection(); 
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String email = resultSet.getString("email");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String role = resultSet.getString("role");
+                    String avatar = resultSet.getString("avatar");
+
+                    return new User(email, name, avatar, password);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; 
+    }
 
 }

@@ -8,5 +8,6 @@ public interface IAccesoDatos<T> {
 	public boolean actualizar(T item);
 	public boolean eliminar(int id);
 	public List<T> obtenerTodos();
+	T obtenerPorId(int id);
 	
 }

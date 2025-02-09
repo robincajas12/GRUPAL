@@ -86,5 +86,29 @@ public class CategoriaAd implements IAccesoDatos<Category> {
         }
         return lista;
     }
+
+
+    @Override
+    public Category obtenerPorId(int id) {
+        String query = "SELECT * FROM categories WHERE id = ?";
+        
+        try (Connection connection = Main.getConnection(); 
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String name = resultSet.getString("name");
+                    String image = resultSet.getString("image");
+
+                    return new Category(id, name, image);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; 
+    }
 }
 
