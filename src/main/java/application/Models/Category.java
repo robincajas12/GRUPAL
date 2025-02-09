@@ -1,9 +1,9 @@
 package application.Models;
 
 public class Category implements IValidosParaCrud {
-    private final int id;
-    private final String name;
-    private final String image;
+    private  int id;
+    private  String name;
+    private  String image;
 
     public Category(int id, String name, String image) {
         this.id = id;

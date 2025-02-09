@@ -73,7 +73,7 @@ public class CategoryCrud implements ICrud<Category> {
                     } else {
                         FormUtils.notification("Category was not updated", "Try again later");
                     }
-                }, item, "id", "name, image");
+                }, item, "id","");
 
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();

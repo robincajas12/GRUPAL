@@ -75,7 +75,7 @@ public class ProductCrud implements ICrud<Product> {
                     } else {
                         FormUtils.notification("Product was not updated", "Try again later");
                     }
-                }, item, "id", "title, price, idCategory");
+                }, item, "id", "idCategory");
 
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
