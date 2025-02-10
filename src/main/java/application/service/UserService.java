@@ -11,89 +11,96 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import application.Models.User;
 
 public class UserService {
-    private static final OkHttpClient client = new OkHttpClient();
-    private static final String BASE_URL = "https://api.escuelajs.co/api/v1/users";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+   package application.Services;
 
-    public UserService() {
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+import application.Models.User;
+import application.DAO.UserDAO;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+
+public class UserService {
+
+    private final UserDAO userDAO = new UserDAO();
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    // API URL for Escuelajs
+    private static final String API_URL = "https://api.escuelajs.co/api/v1/users";
+
+    // Synchronize user data by checking local DB first, then sync with API
+    public User syncUser(int userId) {
+        // Step 1: Try to get the user from the local database
+        User localUser = userDAO.obtenerPorId(userId);
+        if (localUser != null) {
+            // If user exists in local DB, no need to call the API
+            return localUser;
+        }
+
+        // Step 2: If user doesn't exist in the local DB, fetch it from the API
+        User apiUser = getUserFromApi(userId);
+        if (apiUser != null) {
+            // Step 3: Insert the fetched user into the local DB
+            userDAO.crear(apiUser);
+            return apiUser;
+        }
+
+        // If no user is found, return null or throw an exception
+        System.out.println("Could not sync user with ID " + userId);
+        return null;
     }
 
-    public List<User> getAllUsers() throws IOException {
-        Request request = new Request.Builder()
-                .url(BASE_URL)
-                .get()
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                String responseBody = response.body().string();
-                return objectMapper.readValue(responseBody, objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+    // Fetch a user from the API
+    private User getUserFromApi(int userId) {
+        try {
+            String url = API_URL + "/" + userId;
+            ResponseEntity<User> response = restTemplate.exchange(url, HttpMethod.GET, null, User.class);
+            return response.getBody();
+        } catch (Exception e) {
+            // Handle EntityNotFoundError or other exceptions
+            if (e.getMessage().contains("EntityNotFoundError")) {
+                System.out.println("User with ID " + userId + " not found.");
             } else {
-                throw new IOException("Error: " + response.code());
+                e.printStackTrace();
             }
+            return null;
         }
     }
 
-    public User getUserById(int userId) throws IOException {
-        Request request = new Request.Builder()
-                .url(BASE_URL + "/" + userId)
-                .get()
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                return objectMapper.readValue(response.body().string(), User.class);
-            } else {
-                throw new IOException("Error: " + response.code());
-            }
+    // Delete a user (both in the API and the local DB)
+    public boolean deleteUser(int userId) {
+        try {
+            // Step 1: Delete the user from the API
+            String url = API_URL + "/" + userId;
+            restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
+            
+            // Step 2: Delete the user from the local database
+            return userDAO.eliminar(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
-    public User createUser(User user) throws IOException {
-        String json = objectMapper.writeValueAsString(user);
-        RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
-
-        Request request = new Request.Builder()
-                .url(BASE_URL)
-                .post(requestBody)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                return objectMapper.readValue(response.body().string(), User.class);
-            } else {
-                throw new IOException("Error: " + response.code());
-            }
+    // Create and sync a user
+    public User createUser(User user) {
+        User createdUser = createUserInApi(user);
+        if (createdUser != null) {
+            userDAO.crear(createdUser);
+            return createdUser;
         }
+        return null;
     }
 
-    public User updateUser(int userId, User user) throws IOException {
-        String json = objectMapper.writeValueAsString(user);
-        RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
-
-        Request request = new Request.Builder()
-                .url(BASE_URL + "/" + userId)
-                .put(requestBody)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                return objectMapper.readValue(response.body().string(), User.class);
-            } else {
-                throw new IOException("Error: " + response.code());
-            }
+    private User createUserInApi(User user) {
+        try {
+            String url = API_URL + "/";
+            ResponseEntity<User> response = restTemplate.exchange(url, HttpMethod.POST, null, User.class);
+            return response.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
+}
 
-    public boolean deleteUser(int userId) throws IOException {
-        Request request = new Request.Builder()
-                .url(BASE_URL + "/" + userId)
-                .delete()
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return response.isSuccessful();
-        }
-    }
 }
