@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
@@ -47,8 +48,12 @@ public class WholeAppManager extends Application{
 				loader.setLocation(EstudiantesManager.class.getResource("/application/Views/TableProducts.fxml"));
 				break;
 			case EViews.STORE:
-				ProductsManager.createProductGrid(new ProductoAd().getFullSchema());
-				return;
+			    Scene productScene = ProductsManager.createProductScene(new ProductoAd().getFullSchema());
+			    WholeAppManager.stage.setTitle("Tienda de Productos");
+			    WholeAppManager.stage.setScene(productScene);
+			    WholeAppManager.stage.show();
+			    return;
+
 				
 				
 		default:

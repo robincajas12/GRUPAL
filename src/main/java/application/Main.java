@@ -26,7 +26,7 @@ public class Main extends Application {
 		if(connection == null)
 		{
 			try {
-				Main.connection  = DriverManager.getConnection("jdbc:mysql://localhost:3306/FakePlatziStore", "root", "rscajasm1006969");
+				Main.connection  = DriverManager.getConnection("jdbc:mysql://localhost:3306/FakePlatziStore", "root", "Av7641ve@");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -2,9 +2,12 @@ package application.ViewsManager;
 
 import application.Models.CompleteProductSchema;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -17,6 +20,24 @@ public class ProductsManager {
 
     private static final int IMAGE_SIZE = 150;
 
+    public static Scene createProductScene(List<CompleteProductSchema> products) {
+        BorderPane root = new BorderPane();
+
+        Button backButton = new Button("Volver al Menú Principal");
+        backButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        backButton.setOnAction(e -> WholeAppManager.show(EViews.MAIN));
+
+        VBox topContainer = new VBox(10, backButton);
+        topContainer.setPadding(new Insets(10));
+        root.setTop(topContainer);
+
+        ScrollPane productGrid = createProductGrid(products);
+        root.setCenter(productGrid);
+
+        Scene scene = new Scene(root, 800, 600);
+        return scene;
+    }
+
     public static ScrollPane createProductGrid(List<CompleteProductSchema> products) {
         TilePane tilePane = new TilePane();
         tilePane.setPadding(new Insets(10));
@@ -26,7 +47,6 @@ public class ProductsManager {
         tilePane.setStyle("-fx-alignment: center;");
 
         for (CompleteProductSchema product : products) {
-            
             if (product.getImages().isEmpty() || product.getImages().get(0) == null || product.getImages().get(0).isEmpty()) {
                 continue;
             }
@@ -40,13 +60,10 @@ public class ProductsManager {
         return scrollPane;
     }
 
-
     private static VBox createProductBox(CompleteProductSchema product) {
-        
         String imageUrl = product.getImages().isEmpty() ? "default.jpg" : product.getImages().get(0);
         ImageView imageView = new ImageView(new Image(imageUrl, IMAGE_SIZE, IMAGE_SIZE, true, true));
 
-        
         Text title = new Text(product.getTitle());
         title.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
