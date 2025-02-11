@@ -25,6 +25,7 @@
          <Button text="Buscar" onAction="#handleSearchButtonClick" />
          <ButtonBar fx:id="buttonBar" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <buttons>
+               <Button fx:id="btnSincronizar" text="Sincronize" onAction="#handleSincronizeButtonClick" />
                <Button fx:id="btnReload" text="Return" onAction="#handleReturnButtonClick" />
                <Button fx:id="btnReload" text="Reload" onAction="#handleReloadButtonClick" />
             </buttons>

@@ -1,0 +1,30 @@
+/* 🌆 Fondo general */
+.root {
+    -fx-background-color: #f4f4f4; /* Gris claro para un diseño limpio */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* 🔍 Barra superior */
+.hbox {
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+    -fx-background-color: #ffffff; 
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.3, 0, 3);
+}
+
+/* 🔘 Botones */
+.button {
+    -fx-background-color: #6a11cb;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.3, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #4e3ea8;
+}

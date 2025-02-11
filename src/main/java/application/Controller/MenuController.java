@@ -11,6 +11,7 @@ import application.ViewsManager.EViews;
 import application.ViewsManager.WholeAppManager;
 import application.database.SearchAd;
 import application.database.UsuarioAd;
+import application.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -54,6 +55,12 @@ public class MenuController {
     	 System.out.print(query);
     	tableView.getItems().setAll(FXCollections.observableArrayList(SearchAd.buscarUser(query)));
  		tableView.refresh();
+    }
+    @FXML
+    public void handleSincronizeButtonClick()
+    {
+        new UserService().fetchUsers();
+        tableView.getItems().setAll(FXCollections.observableArrayList(new UsuarioAd().obtenerTodos()));
     }
 	public void initialize()
 	{

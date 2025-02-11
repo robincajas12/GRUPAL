@@ -21,7 +21,7 @@ public class UsuarioAd implements IAccesoDatos<User>{
 	public int crear(User item) {
 		System.out.println(item);
 	    try (PreparedStatement pstm = Main.getConnection().prepareStatement(
-	            "INSERT INTO USER(email, password, name, role, avatar) VALUES(?,?,?,?,?);",
+	            "INSERT INTO USER(email, password, name, role, avatar,id) VALUES(?,?,?,?,?,?);",
 	            Statement.RETURN_GENERATED_KEYS
 	    )) {
 	        pstm.setString(1, item.email());
@@ -29,6 +29,7 @@ public class UsuarioAd implements IAccesoDatos<User>{
 	        pstm.setString(3, item.name());
 	        pstm.setString(4, item.role() != null ? item.role() : "customer");
 	        pstm.setString(5, item.avatar());
+			pstm.setInt(6, item.id());
 
 	        int affectedRows = pstm.executeUpdate();
 	        if (affectedRows == 0) {
@@ -100,12 +101,12 @@ public class UsuarioAd implements IAccesoDatos<User>{
 				while(res.next())
 				{
 					lista.add(new User(
-							res.getInt(1),
-							res.getString(2),
-							res.getString(3),
-							res.getString(4),
-							res.getString(5),
-							res.getString(6)
+						res.getInt("id"),
+						res.getString("email"),
+						res.getString("name"),
+						res.getString("avatar"),
+						res.getString("password"),
+						res.getString("role")						
 					));
 					
 				}
@@ -122,7 +123,7 @@ public class UsuarioAd implements IAccesoDatos<User>{
 
     @Override
     public User obtenerPorId(int id) {
-        String query = "SELECT * FROM users WHERE id = ?";
+        String query = "SELECT * FROM USER WHERE id = ?";
         
         try (Connection connection = Main.getConnection(); 
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -136,7 +137,7 @@ public class UsuarioAd implements IAccesoDatos<User>{
                     String role = resultSet.getString("role");
                     String avatar = resultSet.getString("avatar");
 
-                    return new User(email, name, avatar, password);
+                    return new User(id,email, name, avatar, password);
                 }
             }
         } catch (SQLException e) {
