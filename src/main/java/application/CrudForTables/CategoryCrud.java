@@ -1,11 +1,15 @@
 package application.CrudForTables;
 
 
+import java.io.IOException;
+
 import Generics.FormGeneric;
 import Generics.ICrud;
 import application.Models.Category;
 import application.ViewsManager.EstudiantesManager;
+import application.createData.CreateCategory;
 import application.database.CategoriaAd;
+import application.service.CategoryService;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
@@ -23,11 +27,20 @@ public class CategoryCrud implements ICrud<Category> {
             GridPane form = FormGeneric.createForm(Category.class, o -> {
                 o.forEach((key, value) -> System.out.println(key + ": " + value.getText()));
 
-                // Insert new category into the database
-                int result = miCategoryAd.crear(new Category(0,
-                        (String) o.get("name").getText(),
+                Category categoryRecieved = null;
+                CreateCategory c = new CreateCategory(
+                		(String) o.get("name").getText(),
                         (String) o.get("image").getText()
-                ));
+                        );
+                
+                try {
+					categoryRecieved = new CategoryService().createCategory( c );
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
+                
+                // Insert new category into the database Integer.parseInt(o.get("id").getText())
+                int result = miCategoryAd.crear( categoryRecieved );
 
                 // Display appropriate notification
                 if (result >= 0) {

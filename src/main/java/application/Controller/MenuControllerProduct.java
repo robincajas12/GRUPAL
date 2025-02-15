@@ -2,9 +2,13 @@ package application.Controller;
 
 
 import application.CrudForTables.ProductCrud;
+import application.Models.CompleteProductSchema;
 import application.Models.Product;
 import application.database.ProductoAd;
 import application.database.SearchAd;
+import application.service.CategoryImporter;
+import application.service.ProductImporter;
+import application.service.ProductService;
 import application.ViewsManager.WholeAppManager;
 import application.ViewsManager.EViews;
 import javafx.collections.FXCollections;
@@ -17,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import utilitarios.FormUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 import Generics.TableViewGeneric;
 
@@ -42,8 +47,7 @@ public class MenuControllerProduct {
 
     @FXML
     public void handleReloadButtonClick() {
-        // Reload all products from the database
-        tableView.getItems().setAll(FXCollections.observableArrayList(new ProductoAd().obtenerTodos()));
+        tableView.getItems().setAll(FXCollections.observableArrayList(new ProductImporter().importProducts()));
     }
 
     @FXML
@@ -64,6 +68,8 @@ public class MenuControllerProduct {
         ProductCrud productCrud = new ProductCrud();
         tableViewGeneric.fillbuttonBar(buttonBar, productCrud, tableView);
 
+        new CategoryImporter().importCategories();
+        
         // Populate the table with all products
         tableView.getItems().setAll(FXCollections.observableArrayList(new ProductoAd().obtenerTodos()));
         tableView.refresh();

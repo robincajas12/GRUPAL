@@ -8,10 +8,12 @@ module proyecto {
 	requires okhttp3;
 	requires transitive com.fasterxml.jackson.databind;
 
+    opens application.createData to com.fasterxml.jackson.databind;
 	opens application to javafx.graphics, javafx.fxml;
 	opens application.Controller to javafx.fxml;
 	opens application.Models to javafx.base, com.fasterxml.jackson.databind	;
 
+	exports application.createData;
 	exports application.Models;
 	exports application.service;
 	

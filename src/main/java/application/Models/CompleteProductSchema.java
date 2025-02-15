@@ -9,7 +9,16 @@ public class CompleteProductSchema {
     private Category category;
     private List<String> images;
 
-    public int getId() {
+    
+    
+    
+    @Override
+	public String toString() {
+		return "CompleteProductSchema [id=" + id + ", title=" + title + ", price=" + price + ", description="
+				+ description + ", category=" + category + ", images=" + images + "]";
+	}
+
+	public int getId() {
         return id;
     }
 

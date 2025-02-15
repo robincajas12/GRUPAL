@@ -21,32 +21,22 @@ import javafx.scene.layout.GridPane;
 
 public class Main extends Application {
 	private static Connection connection = null;
-	public static Connection getConnection()
-	{
-		if(connection == null)
-		{
-			try {
-				Main.connection  = DriverManager.getConnection("jdbc:mysql://localhost:3306/FakePlatziStore", "root", "rscajasm1006969");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			if(connection.isClosed()) {
-				try {
-					Main.connection  = DriverManager.getConnection("jdbc:mysql://localhost:3306/FakePlatziStore", "root", "rscajasm1006969");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	public static Connection getConnection() {
+	    try {
+			if (connection == null || connection.isClosed()) {
+			    try {
+			        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/FakePlatziStore", "root", "Av7641ve@");
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			    }
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return connection;
+	    return connection;
 	}
+
 	@Override
 	public void start(Stage primaryStage) throws InstantiationException, IllegalAccessException {
 		WholeAppManager miWholeApp = new WholeAppManager();

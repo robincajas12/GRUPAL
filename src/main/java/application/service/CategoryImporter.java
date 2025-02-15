@@ -15,20 +15,24 @@ public class CategoryImporter {
         this.categoryAd = new CategoriaAd();
     }
 
-    public void importCategories() {
+    public List<Category> importCategories() {
+    	List<Category> c = null;
         try {
             List<Category> categories = categoryService.getAllCategories();
             for (Category category : categories) {
+            	
                 if (categoryAd.obtenerPorId(category.id()) == null) {
                     categoryAd.crear(category);
                 } else {
                     categoryAd.actualizar(category);
                 }
             }
-            System.out.println("Importación de categorías completada.");
+            c = categoryAd.obtenerTodos();
+            return c;
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error al importar categorías desde la API.");
+            return null;
         }
     }
 }

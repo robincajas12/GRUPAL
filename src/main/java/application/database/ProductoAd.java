@@ -1,5 +1,7 @@
 package application.database;
 
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +16,8 @@ import application.Models.Category;
 import application.Models.CompleteProductSchema;
 import application.Models.IAccesoDatos;
 import application.Models.Product;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 
@@ -22,24 +26,21 @@ public class ProductoAd implements IAccesoDatos<Product> {
 	public int crear(Product item) {
 	    try {
 	        PreparedStatement pstm = Main.getConnection().prepareStatement(
-	            "INSERT INTO Products(title, price, id_category) VALUES(?, ?, ?);",
+	            "INSERT INTO Products(id, title, price, id_category) VALUES(?, ?, ?, ?);",
 	            Statement.RETURN_GENERATED_KEYS
 	        );
-	        pstm.setString(1, item.title());
-	        pstm.setDouble(2, item.price());
-	        pstm.setInt(3, item.idCategory());
+	        pstm.setInt(1, item.getId());
+	        pstm.setString(2, item.title());
+	        pstm.setDouble(3, item.price());
+	        pstm.setInt(4, item.idCategory());
 	        
 	        int affectedRows = pstm.executeUpdate();
 	        if (affectedRows == 0) {
 	            return -1; 
 	        }
 
-	 
-	        ResultSet generatedKeys = pstm.getGeneratedKeys();
-	        if (generatedKeys.next()) {
-	            int id = generatedKeys.getInt(1); 
-	            return id;
-	        }
+
+	        return 1;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -151,6 +152,25 @@ public class ProductoAd implements IAccesoDatos<Product> {
 
 	@Override
 	public Product obtenerPorId(int id) {
-		return null;
-	}
+		String query = "SELECT * FROM Products WHERE id = ?";
+        
+        try (Connection connection = Main.getConnection(); 
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String title = resultSet.getString("title");
+                    double price = resultSet.getDouble("price");
+                    int id_category = resultSet.getInt("id_category");
+
+                    return new Product(id, title, price, id_category);
+                }
+            }
+        } catch (SQLException e) {
+        	return null;
+//        	e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -1,11 +1,9 @@
 package application.service;
 
-
 import application.Models.Category;
-import application.Models.CompleteProductSchema;
 import application.Models.Product;
-import application.Models.ProductImage;
-import application.database.*;
+import application.database.CategoriaAd;
+import application.database.ProductoAd;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,74 +12,51 @@ public class ProductImporter {
     private ProductService productService;
     private CategoriaAd categoriaAd;
     private ProductoAd productoAd;
-    private ProductImageAd productImageAd;
 
     public ProductImporter() {
         this.productService = new ProductService();
         this.categoriaAd = new CategoriaAd();
         this.productoAd = new ProductoAd();
-        this.productImageAd = new ProductImageAd();
     }
 
-    public void importProducts() {
+    public List<Product> importProducts() {
+        List<Product> c = null;
         try {
-            // Obtener todos los productos de la API
-            List<CompleteProductSchema> products = productService.getAllProducts();
-            for (CompleteProductSchema product : products) {
-                // Verificar si el producto ya existe en la base de datos
-                if (productoAd.obtenerPorId(product.getId()) == null) {
-                    // Guardar la categoría si no existe
-                    Category category = product.getCategory();
-                    if (categoriaAd.obtenerPorId(category.getId()) == null) {
-                        categoriaAd.crear(category);
-                    }
+            // Obtener los productos desde la API
+            List<Product> products = productService.getAllProductsApi();
 
-                    // Guardar el producto
-                    Product productToSave = new Product(
-                            product.getId(),
-                            product.getTitle(),
-                            product.getPrice(),
-                            category.getId()
-                    );
-                    productoAd.crear(productToSave);
+            for (Product product : products) {
+                // Comprobar si la categoría existe en la base de datos
+                Category category = categoriaAd.obtenerPorId(product.idCategory());
 
-                    // Guardar las imágenes del producto
-                    List<String> images = product.getImages();
-                    for (String imageUrl : images) {
-                        ProductImage imageToSave = new ProductImage(
-                                0, // El ID se generará automáticamente
-                                product.getId(),
-                                imageUrl
-                        );
-                        productImageAd.crear(imageToSave);
-                    }
-                } else {
-                    // Actualizar el producto si ya existe
-                    Product productToUpdate = new Product(
-                            product.getId(),
-                            product.getTitle(),
-                            product.getPrice(),
-                            product.getCategory().getId()
-                    );
-                    productoAd.actualizar(productToUpdate);
+                // Si la categoría no existe, crearla
+                if (category == null) {
+                    // Crear una nueva categoría usando los datos del producto
+                    category = new Category(product.idCategory(), "Unknown", "default_image_url");  // Datos ficticios, puedes ajustarlos
+                    int categoryId = categoriaAd.crear(category);
 
-                    // Actualizar las imágenes del producto (eliminar las antiguas y agregar las nuevas)
-                    productImageAd.eliminarPorProducto(product.getId());
-                    List<String> images = product.getImages();
-                    for (String imageUrl : images) {
-                        ProductImage imageToSave = new ProductImage(
-                                0, // El ID se generará automáticamente
-                                product.getId(),
-                                imageUrl
-                        );
-                        productImageAd.crear(imageToSave);
+                    // Si la categoría se creó correctamente, se actualiza el producto con el nuevo id
+                    if (categoryId > 0) {
+                        product = new Product(product.id(), product.title(), product.price(), categoryId);
                     }
                 }
+
+                // Si la categoría ya existía o se creó correctamente, crear o actualizar el producto
+                if (productoAd.obtenerPorId(product.id()) == null) {
+                    productoAd.crear(product);
+                } else {
+                    productoAd.actualizar(product);
+                }
             }
-            System.out.println("Importación de productos completada.");
+
+            // Obtener la lista de productos
+            c = productoAd.obtenerTodos();
+            return c;
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error al importar productos desde la API.");
+            return null;
         }
     }
 }

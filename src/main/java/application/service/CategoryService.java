@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.Models.Category;
+import application.createData.CreateCategory;
 
 public class CategoryService {
     private static final OkHttpClient client = new OkHttpClient();
@@ -34,7 +35,7 @@ public class CategoryService {
             }
         }
     }
-
+   
     // Método para obtener una categoría por ID
     public Category getCategoryById(int categoryId) throws IOException {
         Request request = new Request.Builder()
@@ -52,7 +53,7 @@ public class CategoryService {
     }
 
     // Método para crear una nueva categoría
-    public Category createCategory(Category category) throws IOException {
+    public Category createCategory(CreateCategory category) throws IOException {
         String json = objectMapper.writeValueAsString(category);
         RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
 

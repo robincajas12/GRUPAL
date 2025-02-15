@@ -4,6 +4,8 @@ import application.CrudForTables.CategoryCrud;
 import application.Models.Category;
 import application.database.CategoriaAd;
 import application.database.SearchAd;
+import application.service.CategoryImporter;
+import application.service.CategoryService;
 import application.ViewsManager.WholeAppManager;
 import application.ViewsManager.EViews;
 import javafx.collections.FXCollections;
@@ -16,6 +18,8 @@ import javafx.scene.input.MouseEvent;
 import utilitarios.FormUtils;
 
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 
 import Generics.TableViewGeneric;
 
@@ -41,13 +45,11 @@ public class MenuControllerCategory {
 
     @FXML
     public void handleReloadButtonClick() {
-        // Reload all categories from the database
-        tableView.getItems().setAll(FXCollections.observableArrayList(new CategoriaAd().obtenerTodos()));
+        tableView.getItems().setAll(FXCollections.observableArrayList( new CategoryImporter().importCategories()));
     }
 
     @FXML
     public void handleSearchButtonClick() {
-        // Search categories based on the input text
         String query = searchField.getText();
         System.out.print(query);
         tableView.getItems().setAll(FXCollections.observableArrayList(SearchAd.buscarCategoria(query)));

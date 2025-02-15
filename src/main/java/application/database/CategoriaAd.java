@@ -15,43 +15,41 @@ public class CategoriaAd implements IAccesoDatos<Category> {
 	@Override
 	public int crear(Category item) {
 	    try (PreparedStatement pstm = Main.getConnection().prepareStatement(
-	            "INSERT INTO Categories(name, image) VALUES(?, ?);",
+	            "INSERT INTO Categories(id, name, image) VALUES(?, ?, ?);",
 	            Statement.RETURN_GENERATED_KEYS
 	    )) {
-	        pstm.setString(1, item.name());
-	        pstm.setString(2, item.image());
+	    	pstm.setLong(1, item.id());
+	        pstm.setString(2, item.name());
+	        pstm.setString(3, item.image());
 
 	        int affectedRows = pstm.executeUpdate();
 	        if (affectedRows == 0) {
 	            return -1; 
 	        }
 
-	        try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
-	            if (generatedKeys.next()) {
-	                return generatedKeys.getInt(1); 
-	            }
-	        }
+	        return 1;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	    return -1; 
 	}
 
-
     @Override
     public boolean actualizar(Category item) {
-        try {
-            PreparedStatement pstm = Main.getConnection().prepareStatement("UPDATE Categories SET name = ?, image = ? WHERE id = ?");
+        try (PreparedStatement pstm = Main.getConnection().prepareStatement("UPDATE Categories SET name = ?, image = ? WHERE id = ?")) {
             pstm.setString(1, item.name());
             pstm.setString(2, item.image());
             pstm.setInt(3, item.id());
-            pstm.execute();
-            return true;
+
+            int rowsUpdated = pstm.executeUpdate();
+            return rowsUpdated > 0; 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
+
+
 
     @Override
     public boolean eliminar(int id) {
@@ -90,7 +88,7 @@ public class CategoriaAd implements IAccesoDatos<Category> {
 
     @Override
     public Category obtenerPorId(int id) {
-        String query = "SELECT * FROM categories WHERE id = ?";
+        String query = "SELECT * FROM Categories WHERE id = ?";
         
         try (Connection connection = Main.getConnection(); 
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -105,10 +103,10 @@ public class CategoriaAd implements IAccesoDatos<Category> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+        	return null;
+//        	e.printStackTrace();
         }
-
-        return null; 
+        return null;
     }
 }
 
